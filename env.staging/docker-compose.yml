@@ -1,0 +1,44 @@
+# docker-compose up -d
+
+version: "3"
+
+services:
+  db:
+    container_name: someapp_db
+    image: postgres:12-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - "5555:5432"
+    expose:
+      - "5555"
+  api:
+    container_name: someapp_api
+    image: registry.gitlab.com/someuser/someapp/backend:latest
+    restart: always
+    # ports:
+    #   - 3000:3000
+    depends_on:
+      - db
+  app:
+    container_name: someapp_app
+    image: registry.gitlab.com/someuser/someapp/frontend:latest
+    restart: always
+    # ports:
+    #   - 4000:4000
+    depends_on:
+      - api
+  nginx:
+    container_name: someapp_nginx
+    restart: always
+    build: ./nginx
+    ports:
+      - "8081:80"
+    depends_on:
+      - api
+      - app
