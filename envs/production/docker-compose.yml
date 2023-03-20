@@ -1,0 +1,79 @@
+version: '3'
+
+services:
+  nginx-proxy:
+    container_name: liber_nginx-proxy
+    image: jwilder/nginx-proxy
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - certs:/etc/nginx/certs:ro
+      - vhostd:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - acme:/etc/acme.sh
+      - './custom.conf:/etc/nginx/conf.d/custom.conf'
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+
+  letsencrypt:
+    container_name: liber_letsencrypt
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    restart: always
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - vhostd:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - acme:/etc/acme.sh
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  db:
+    container_name: liber_db
+    image: postgres:12-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - ../../pgdata:/var/lib/postgresql/data
+
+  api:
+    container_name: liber_api
+    restart: always
+    build: ../../liber-backend
+    depends_on:
+      - db
+
+  app:
+    container_name: liber_app
+    restart: always
+    build: ../../liber-frontend
+    depends_on:
+      - api
+
+  nginx:
+    container_name: liber_nginx
+    restart: always
+    build: ../nginx
+    expose:
+      - '80'
+    depends_on:
+      - api
+      - app
+      - nginx-proxy
+      - letsencrypt
+    environment:
+      - VIRTUAL_HOST=app.liberarg.com
+      - LETSENCRYPT_HOST=app.liberarg.com
+      - LETSENCRYPT_EMAIL=deployment@devlights.com
+
+volumes:
+  certs:
+  html:
+  vhostd:
+  acme:
