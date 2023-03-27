@@ -17,7 +17,7 @@ FRONT_IMG_PATH=registry.gitlab.com/${USERNAME}/someapp/frontend:latest
 #
 
 # git pull
-girPull(){
+git_pull(){
     git checkout ${BRANCH}
 
     git pull 
@@ -35,7 +35,7 @@ girPull(){
 cd ../../../someapp-backend
 
 # git pull
-girPull
+git_pull
 
 # docker image prune -af
 docker build -t="${BACK_IMG_NAME}" .
@@ -53,7 +53,7 @@ docker push ${BACK_IMG_PATH}
 cd ../someapp-frontend
 
 # git pull
-girPull
+git_pull
 
 # docker image prune -af
 docker build -t="${FRONT_IMG_NAME}" .
