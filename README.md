@@ -25,6 +25,6 @@ docker login registry.gitlab.com
 username
 password: use an access tocken here
 
-docker build -t registry.gitlab.com/jesusandres31/chatas-deployment .
+docker build -t registry.gitlab.com/someuser/someapp .
 
-docker push registry.gitlab.com/jesusandres31/chatas-deployment
+docker push registry.gitlab.com/someuser/someapp
