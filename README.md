@@ -22,7 +22,7 @@ Follow these steps to use the repository in your project:
 
 ### 1) Add the Repository to Your Project
 
-You can either fork the repository and add it to your project, or clone it and then remove the .git folder.
+You can either fork the repository and add it to your project, or clone it and then remove the `.git` folder.
 
 Assuming your project has the following structure:
 
