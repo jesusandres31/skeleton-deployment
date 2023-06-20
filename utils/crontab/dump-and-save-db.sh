@@ -16,8 +16,8 @@
 # sudo EDITOR=nano crontab -e
 #
 # # At 00:00 on Sunday
-# DUMP_DB_SCRIPT_PATH=/home/Liber/cronjob/dump-and-save-db.sh 
-# DUMP_DB_LOG_PATH=/home/Liber/cronjob/dump-and-save-db.log
+# DUMP_DB_SCRIPT_PATH=/home/someapp/cronjob/dump-and-save-db.sh 
+# DUMP_DB_LOG_PATH=/home/someapp/cronjob/dump-and-save-db.log
 # 0 0 * * 0 /bin/bash $DUMP_DB_SCRIPT_PATH > $DUMP_DB_LOG_PATH 2>&1
 
 ######## SET SCRIP ########
@@ -25,11 +25,11 @@
 #!/bin/sh
 
 # SET VARS...
-ROOT_PATH=/home/Liber/cronjob
+ROOT_PATH=/home/someapp/cronjob
 FOLDER_ID=asdasdasdadadasdasdasddasd
-BACKUP_NAME=liber_db_backup
-DB_CONT_NAME=liber_db
-DB_NAME=liber
+BACKUP_NAME=someapp_db_backup
+DB_CONT_NAME=someapp_db
+DB_NAME=someapp
 
 # SCRIPT STARTS...
 # dump db from container

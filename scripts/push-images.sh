@@ -45,12 +45,12 @@ push_image() {
 
   cd -
 }
- 
+
 # Push back image
-push_image "${REPO_NAME}-back" "registry.gitlab.com/${USERNAME}/${REPO_NAME}/back:latest"
+push_image "${REPO_NAME}-${BACKEND}" "registry.gitlab.com/${USERNAME}/${REPO_NAME}/${BACKEND}:latest"
 
 # Push front image
-push_image "${REPO_NAME}-front" "registry.gitlab.com/${USERNAME}/${REPO_NAME}/front:latest"
+push_image "${REPO_NAME}-${FRONTEND}" "registry.gitlab.com/${USERNAME}/${REPO_NAME}/${FRONTEND}:latest"
 
 # Finish
 echo "Done!"

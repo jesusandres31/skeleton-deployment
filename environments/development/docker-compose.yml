@@ -1,10 +1,8 @@
-# docker-compose -f docker-compose.yml --env-file ../../liber-backend/.env up --build -d
-
-version: '3'
+version: "3"
 
 services:
   db:
-    container_name: liber_db
+    container_name: someapp_db
     image: postgres:12-alpine
     restart: always
     environment:
@@ -14,26 +12,26 @@ services:
     volumes:
       - ../../pgdata:/var/lib/postgresql/data
   api:
-    container_name: liber_api
+    container_name: someapp_api
     restart: always
     build:
-      context: ../../liber-backend
+      context: ../../someapp-backend
       dockerfile: Dockerfile.dev
     volumes:
-      - ../../liber-backend:/usr/src/app
+      - ../../someapp-backend:/usr/src/app
     ports:
-      - '4000:4000'
+      - "4000:4000"
     depends_on:
       - db
   app:
-    container_name: liber_app
+    container_name: someapp_app
     restart: always
     build:
-      context: ../../liber-frontend
+      context: ../../someapp-frontend
       dockerfile: Dockerfile.dev
     volumes:
-      - ../../liber-frontend:/usr/src/app
+      - ../../someapp-frontend:/usr/src/app
     ports:
-      - '3000:3000'
+      - "3000:3000"
     depends_on:
       - api

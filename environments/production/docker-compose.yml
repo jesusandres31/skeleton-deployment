@@ -1,25 +1,25 @@
-version: '3'
+version: "3"
 
 services:
   nginx-proxy:
-    container_name: liber_nginx-proxy
+    container_name: someapp_nginx-proxy
     image: jwilder/nginx-proxy
     restart: always
     ports:
-      - '80:80'
-      - '443:443'
+      - "80:80"
+      - "443:443"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - certs:/etc/nginx/certs:ro
       - vhostd:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
       - acme:/etc/acme.sh
-      - './custom.conf:/etc/nginx/conf.d/custom.conf'
+      - "./custom.conf:/etc/nginx/conf.d/custom.conf"
     labels:
       - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
 
   letsencrypt:
-    container_name: liber_letsencrypt
+    container_name: someapp_letsencrypt
     image: jrcs/letsencrypt-nginx-proxy-companion
     restart: always
     environment:
@@ -32,7 +32,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   db:
-    container_name: liber_db
+    container_name: someapp_db
     image: postgres:12-alpine
     restart: always
     environment:
@@ -43,33 +43,33 @@ services:
       - ../../pgdata:/var/lib/postgresql/data
 
   api:
-    container_name: liber_api
+    container_name: someapp_api
     restart: always
-    build: ../../liber-backend
+    build: ../../someapp-backend
     depends_on:
       - db
 
   app:
-    container_name: liber_app
+    container_name: someapp_app
     restart: always
-    build: ../../liber-frontend
+    build: ../../someapp-frontend
     depends_on:
       - api
 
   nginx:
-    container_name: liber_nginx
+    container_name: someapp_nginx
     restart: always
     build: ../nginx
     expose:
-      - '80'
+      - "80"
     depends_on:
       - api
       - app
       - nginx-proxy
       - letsencrypt
     environment:
-      - VIRTUAL_HOST=app.liberarg.com
-      - LETSENCRYPT_HOST=app.liberarg.com
+      - VIRTUAL_HOST=app.someapparg.com
+      - LETSENCRYPT_HOST=app.someapparg.com
       - LETSENCRYPT_EMAIL=deployment@devlights.com
 
 volumes:

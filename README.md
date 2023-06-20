@@ -76,6 +76,30 @@ Edit the .env file in the config directory to replace the following variables:
 - `DB_USER`: The username for the PostgreSQL database.
 - `DB_DATABASE`: The name of the PostgreSQL database.
 
+### 4) Execute scripts
+
+- `deploy.sh` example:
+
+```shell
+sh scripts/deploy.sh -d # development
+sh scripts/deploy.sh -s # staging
+sh scripts/deploy.sh -p # production
+```
+
+- `stop-containers.sh` example:
+
+```shell
+sh scripts/stop-containers.sh -d # development
+sh scripts/stop-containers.sh -s # staging
+sh scripts/stop-containers.sh -p # production
+```
+
+- `push-images.sh` example:
+
+```shell
+sh scripts/push-images.sh
+```
+
 <br/>
 <hr/>
 
